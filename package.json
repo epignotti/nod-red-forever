@@ -1,0 +1,26 @@
+{
+"name"          : "node-red-forever",
+"version"       : "0.0.1",
+"description"   : "A process to monitor node red",
+"dependencies"  : {
+  "forever-monitor": "*",
+  "winston": "*"
+},
+"repository" : {
+"type":"git",
+"url":"https://github.com/epignotti/node-red-forever/tree/master/"
+},
+
+"scripts": {
+    "start": "node node-red-monitor.js",
+    "stop": "pkill -f \"$node.*node-red-monitor\\.js$\" || true"
+  },
+
+"license": "Apache",
+"keywords": [ "node-red", "monitor"],
+
+"author": {
+"name": "Edoardo Pignotti",
+"email": "edoardo.pignotti@gmail.com"
+}
+}
