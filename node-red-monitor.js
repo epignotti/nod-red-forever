@@ -1,7 +1,9 @@
 var forever = require('forever-monitor');
 var winston = require('winston');
 
-var node_red_process = new (forever.Monitor)('/usr/local/lib/node_modules/node-red/red.js', {
+var node_red_process = new (forever.Monitor)(['/usr/local/lib/node_modules/node-red/bin/node-red-pi',
+    '--max-old-space-size=128',
+    '-u', '~/.node-red'], {
     silent: false,
     killTree: true
 });
@@ -11,7 +13,7 @@ var logger = new (winston.Logger)({
         new (winston.transports.DailyRotateFile)({
             name: 'file',
             datePattern: '.yyyy-MM-dd',
-            filename: '/var/log/node-red-monitor.log' })
+            filename: '/var/log/node-red-monitoring/node-red-monitor.log' })
     ]
 });
 
