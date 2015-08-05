@@ -12,10 +12,11 @@ var options = {
 
 var logger = new (winston.Logger)({
     transports: [
-        //new (winston.transports.Console)(),
+        //new (winston.transports.Console)({timestamp: true}),
         new (winston.transports.DailyRotateFile)({
             name: 'file',
             datePattern: '.yyyy-MM-dd',
+            timestamp: true,
             filename: '/var/log/node-red-monitoring/node-red-responding.log' })
     ]
 });
@@ -23,6 +24,8 @@ var logger = new (winston.Logger)({
 logger.log("info", "Node-red responding process started.");
 
 var j = schedule.scheduleJob('*/10 * * * *', function(){
+
+    logger.log("info", "Checking now.");
 
     var req = http.request(options, function(res) {
     });
@@ -37,10 +40,18 @@ var j = schedule.scheduleJob('*/10 * * * *', function(){
     req.on('error', function(err) {
         if (err.code === "ECONNRESET") {
             logger.log("info", "Node-red not responding, killing process now.");
-            pkill('node-red');
-            //specific error treatment
+            try {
+             pkill('node-red');
+            } catch (ex) {
+                logger.log("error", "Could not kill node-red process: " + ex);
+            }
+
+        } else {
+            logger.log("error", "Cannot connect to node-red HTTP service. Maybe node-red is down.");
         }
     //other error treatment
+
+
     });
 
     req.end();

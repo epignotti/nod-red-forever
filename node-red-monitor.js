@@ -19,6 +19,7 @@ var logger = new (winston.Logger)({
         new (winston.transports.DailyRotateFile)({
             name: 'file',
             datePattern: '.yyyy-MM-dd',
+            timestamp: true,
             filename: '/var/log/node-red-monitoring/node-red-monitor.log'
         })
     ]
