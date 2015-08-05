@@ -25,7 +25,7 @@ logger.log("info", "Node-red responding process started.");
 
 var j = schedule.scheduleJob('*/10 * * * *', function(){
 
-    logger.log("info", "Checking now.");
+    //logger.log("info", "Checking now.");
 
     var req = http.request(options, function(res) {
     });
