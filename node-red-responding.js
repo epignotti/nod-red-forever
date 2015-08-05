@@ -23,7 +23,7 @@ var logger = new (winston.Logger)({
 
 logger.log("info", "Node-red responding process started.");
 
-var j = schedule.scheduleJob('*/10 * * * *', function(){
+var j = schedule.scheduleJob('*/5 * * * *', function(){
 
     //logger.log("info", "Checking now.");
 

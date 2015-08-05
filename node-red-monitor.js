@@ -1,11 +1,34 @@
 var forever = require('forever-monitor');
 var winston = require('winston');
+var fs = require('fs');
+
 var node_red_process = new (forever.Monitor)(['/usr/local/lib/node_modules/node-red/bin/node-red-pi',
     '--max-old-space-size=128',
     '-u', '~/.node-red'], {
     silent: false,
     killTree: true
 });
+
+var stats = {};
+
+var statsFilename = "/var/log/node-red-monitoring/stats.json";
+
+fs.exists(statsFilename, function (exists) {
+    if(exists)
+    {
+        var file_content = fs.readFileSync(statsFilename);
+        stats = JSON.parse(file_content);
+        if (!stats) {
+            stats.restartCounter = 0;
+            fs.writeFileSync(statsFilename, JSON.stringify(stats));
+        }
+    }else
+    {
+            stats.restartCounter = 0;
+            fs.writeFileSync(statsFilename, JSON.stringify(stats));
+    }
+});
+
 
 
 var node_red_responding_process = new (forever.Monitor)('node-red-responding.js', {
@@ -30,6 +53,8 @@ node_red_process.on('exit', function () {
     }.bind(node_red_process)
 ).on('restart', function () {
         logger.log("error", "Restarting node-red restart count=", this.times);
+        stats.restartCounter = stats.restartCounter +1;
+        fs.writeFileSync(statsFilename, JSON.stringify(stats));
     }.bind(node_red_process)
 ).on('stdout', function (data) {
         var buff = new Buffer(data);
