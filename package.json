@@ -1,14 +1,16 @@
 {
-"name"          : "node-red-forever",
+"name"          : "node-red-redemption",
 "version"       : "0.0.1",
 "description"   : "A process to monitor node red",
 "dependencies"  : {
   "forever-monitor": "*",
-  "winston": "*"
+  "winston": "*",
+  "pkill" : "*",
+  "node-schedule" : "*"
 },
 "repository" : {
 "type":"git",
-"url":"https://github.com/epignotti/node-red-forever/tree/master/"
+"url":"https://github.com/epignotti/node-red-redemption/tree/master/"
 },
 
 "scripts": {
